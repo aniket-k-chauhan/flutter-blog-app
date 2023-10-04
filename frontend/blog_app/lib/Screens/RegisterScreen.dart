@@ -1,6 +1,13 @@
+import "package:blog_app/api/firestoreAPI.dart";
+import "package:blog_app/auth/auth.dart";
+import "package:blog_app/model/user.dart";
+import "package:blog_app/widgets/common/custom_loader.dart";
+import "package:blog_app/widgets/common/cutom_input_field_widget.dart";
 import "package:flutter/material.dart";
 
 class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +28,7 @@ class RegisterScreen extends StatelessWidget {
               SizedBox(
                 height: 25,
               ),
-              RegisterForm(),
+              _RegisterForm(),
               SizedBox(
                 height: 15,
               ),
@@ -33,7 +40,9 @@ class RegisterScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 18),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed("/login");
+                    },
                     child: Text(
                       "Login",
                       style: TextStyle(
@@ -52,19 +61,21 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
-class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
-
+class _RegisterForm extends StatefulWidget {
   @override
-  State<RegisterForm> createState() {
+  State<_RegisterForm> createState() {
     return _RegisterFormState();
   }
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _RegisterFormState extends State<_RegisterForm> {
   final _formKey = GlobalKey<FormState>();
+
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -72,20 +83,70 @@ class _RegisterFormState extends State<RegisterForm> {
       key: _formKey,
       child: Column(
         children: [
-          inputField(context, "Email", false, emailController),
-          inputField(context, "Password", true, pwdController),
-          Container(
-            width: MediaQuery.of(context).size.width - 90,
-            height: 45,
-            margin: const EdgeInsets.symmetric(vertical: 16),
-            child: ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                "Register",
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
+          CustomInputFieldWidget(
+            labelText: "Name",
+            obscureText: false,
+            controller: nameController,
+            maxLine: 1,
           ),
+          CustomInputFieldWidget(
+            labelText: "Email",
+            obscureText: false,
+            controller: emailController,
+            maxLine: 1,
+          ),
+          CustomInputFieldWidget(
+            labelText: "Password",
+            obscureText: true,
+            controller: pwdController,
+            maxLine: 1,
+          ),
+          // inputField(context, "Name", false, nameController),
+          // inputField(context, "Email", false, emailController),
+          // inputField(context, "Password", true, pwdController),
+          loading
+              ? CustomLoader()
+              : Container(
+                  width: MediaQuery.of(context).size.width - 90,
+                  height: 45,
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        try {
+                          setState(() {
+                            loading = true;
+                          });
+                          // register
+                          final userCredential = await Auth.register(
+                              emailController.text, pwdController.text);
+                          final user = UserModel(
+                            name: nameController.text,
+                            email: userCredential.user!.email,
+                          );
+
+                          // add user
+                          await addUser(user);
+
+                          // navigate to home page
+                          Navigator.of(context).pushReplacementNamed("/home");
+                        } catch (error) {
+                          final snackBar =
+                              SnackBar(content: Text(error.toString()));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } finally {
+                          setState(() {
+                            loading = false;
+                          });
+                        }
+                      }
+                    },
+                    child: Text(
+                      "Register",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ),
         ],
       ),
     );
@@ -95,10 +156,16 @@ class _RegisterFormState extends State<RegisterForm> {
       TextEditingController controller) {
     return Container(
       width: MediaQuery.of(context).size.width - 70,
-      height: 55,
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
         controller: controller,
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return "Please enter ${labelText.toLowerCase()}";
+          }
+
+          return null;
+        },
         obscureText: obscureText,
         style: TextStyle(fontSize: 17),
         decoration: InputDecoration(
@@ -117,6 +184,20 @@ class _RegisterFormState extends State<RegisterForm> {
             borderSide: BorderSide(
               color: Colors.grey,
               width: 1,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(
+              color: Colors.red[200]!,
+              width: 1.5,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(
+              color: Colors.red[200]!,
+              width: 1.5,
             ),
           ),
         ),

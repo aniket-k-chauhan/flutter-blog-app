@@ -1,3 +1,6 @@
+import "package:blog_app/auth/auth.dart";
+import "package:blog_app/widgets/common/custom_loader.dart";
+import "package:blog_app/widgets/common/cutom_input_field_widget.dart";
 import "package:flutter/material.dart";
 
 class LoginScreen extends StatelessWidget {
@@ -21,7 +24,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(
                 height: 25,
               ),
-              RegisterForm(),
+              _LoginForm(),
               SizedBox(
                 height: 15,
               ),
@@ -29,11 +32,13 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "New user? ",
+                    "New user?",
                     style: TextStyle(fontSize: 18),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed("/register");
+                    },
                     child: Text(
                       "Register",
                       style: TextStyle(
@@ -52,19 +57,22 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class RegisterForm extends StatefulWidget {
-  const RegisterForm({super.key});
+class _LoginForm extends StatefulWidget {
+  const _LoginForm({super.key});
 
   @override
-  State<RegisterForm> createState() {
-    return _RegisterFormState();
+  State<_LoginForm> createState() {
+    return _LoginFormState();
   }
 }
 
-class _RegisterFormState extends State<RegisterForm> {
+class _LoginFormState extends State<_LoginForm> {
   final _formKey = GlobalKey<FormState>();
+
   TextEditingController emailController = TextEditingController();
   TextEditingController pwdController = TextEditingController();
+
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -72,54 +80,55 @@ class _RegisterFormState extends State<RegisterForm> {
       key: _formKey,
       child: Column(
         children: [
-          inputField(context, "Email", false, emailController),
-          inputField(context, "Password", true, pwdController),
-          Container(
-            width: MediaQuery.of(context).size.width - 90,
-            height: 45,
-            margin: const EdgeInsets.symmetric(vertical: 16),
-            child: ElevatedButton(
-              onPressed: () {},
-              child: Text(
-                "Login",
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
+          CustomInputFieldWidget(
+            labelText: "Email",
+            obscureText: false,
+            controller: emailController,
+            maxLine: 1,
           ),
-        ],
-      ),
-    );
-  }
+          CustomInputFieldWidget(
+            labelText: "Password",
+            obscureText: true,
+            controller: pwdController,
+            maxLine: 1,
+          ),
+          loading
+              ? CustomLoader()
+              : Container(
+                  width: MediaQuery.of(context).size.width - 90,
+                  height: 45,
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        try {
+                          setState(() {
+                            loading = true;
+                          });
+                          // login
+                          await Auth.login(
+                              emailController.text, pwdController.text);
 
-  Container inputField(BuildContext context, String labelText, bool obscureText,
-      TextEditingController controller) {
-    return Container(
-      width: MediaQuery.of(context).size.width - 70,
-      height: 55,
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      child: TextFormField(
-        controller: controller,
-        obscureText: obscureText,
-        style: TextStyle(fontSize: 17),
-        decoration: InputDecoration(
-          labelText: labelText,
-          labelStyle: TextStyle(
-            fontSize: 17,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(
-              width: 1.5,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide(
-              color: Colors.grey,
-              width: 1,
-            ),
-          ),
-        ),
+                          // navigate to home page
+                          Navigator.of(context).pushReplacementNamed("/home");
+                        } catch (error) {
+                          final snackBar =
+                              SnackBar(content: Text(error.toString()));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } finally {
+                          setState(() {
+                            loading = false;
+                          });
+                        }
+                      }
+                    },
+                    child: Text(
+                      "Login",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                ),
+        ],
       ),
     );
   }
