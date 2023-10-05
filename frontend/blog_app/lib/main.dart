@@ -22,8 +22,6 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // Routes
-      // initialRoute: "/register",
       onGenerateRoute: RouteGenerator.generateRoute,
       home: SplashScreen(),
     );

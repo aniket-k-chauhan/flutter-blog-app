@@ -5,13 +5,15 @@ class CustomInputFieldWidget extends StatelessWidget {
   final bool obscureText;
   final TextEditingController controller;
   final int? maxLine;
+  final bool readOnly;
 
-  const CustomInputFieldWidget({
+  CustomInputFieldWidget({
     super.key,
     required this.labelText,
-    required this.obscureText,
     required this.controller,
-    this.maxLine,
+    this.obscureText = false,
+    this.maxLine = 1,
+    this.readOnly = false,
   });
 
   @override
@@ -20,6 +22,7 @@ class CustomInputFieldWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width - 70,
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
+        readOnly: readOnly,
         maxLines: maxLine,
         controller: controller,
         validator: (value) {

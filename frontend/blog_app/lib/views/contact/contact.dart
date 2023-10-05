@@ -1,5 +1,6 @@
 import 'package:blog_app/api/firestoreAPI.dart';
 import 'package:blog_app/model/contact.dart';
+import 'package:blog_app/widgets/common/common_snackbar.dart';
 import 'package:blog_app/widgets/common/custom_loader.dart';
 import 'package:blog_app/widgets/common/cutom_input_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -92,9 +93,9 @@ class _ContactFormState extends State<_ContactForm> {
                           _titleController.clear();
                           _descriptionController.clear();
                         } catch (error) {
-                          final snackBar =
-                              SnackBar(content: Text(error.toString()));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              CommonSnackBar.buildSnackBar(
+                                  context, error.toString()));
                         } finally {
                           setState(() {
                             loading = false;

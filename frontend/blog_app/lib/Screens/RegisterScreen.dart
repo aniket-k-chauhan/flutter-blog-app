@@ -1,6 +1,7 @@
 import "package:blog_app/api/firestoreAPI.dart";
 import "package:blog_app/auth/auth.dart";
 import "package:blog_app/model/user.dart";
+import "package:blog_app/widgets/common/common_snackbar.dart";
 import "package:blog_app/widgets/common/custom_loader.dart";
 import "package:blog_app/widgets/common/cutom_input_field_widget.dart";
 import "package:flutter/material.dart";
@@ -131,9 +132,9 @@ class _RegisterFormState extends State<_RegisterForm> {
                           // navigate to home page
                           Navigator.of(context).pushReplacementNamed("/home");
                         } catch (error) {
-                          final snackBar =
-                              SnackBar(content: Text(error.toString()));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              CommonSnackBar.buildSnackBar(
+                                  context, error.toString()));
                         } finally {
                           setState(() {
                             loading = false;

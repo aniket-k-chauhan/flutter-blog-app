@@ -2,6 +2,9 @@ import 'package:blog_app/auth/auth.dart';
 import 'package:blog_app/views/blog/blog.dart';
 import 'package:blog_app/views/contact/contact.dart';
 import 'package:blog_app/views/portfolio/portfolio.dart';
+import 'package:blog_app/widgets/blog/blog_floating_action_button.dart';
+import 'package:blog_app/widgets/common/common_snackbar.dart';
+import 'package:blog_app/widgets/portfolio/portfolio_floating_action_button.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -14,6 +17,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   final List<String> title = ["Portfolio", "Blog", "Contact"];
   final List<Widget> body = [Portfolio(), Blog(), Contact()];
+  final List<Widget> floatingActionButton = [
+    PortfolioFloatingActionButton(),
+    BlogFloatingActionButton()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +35,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Navigator.of(context)
                     .pushNamedAndRemoveUntil("/login", (route) => false);
               } catch (error) {
-                final snackBar = SnackBar(content: Text(error.toString()));
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    CommonSnackBar.buildSnackBar(context, error.toString()));
               }
             },
             iconSize: 34,
@@ -40,6 +47,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
       body: body[_selectedIndex],
+      floatingActionButton:
+          _selectedIndex == 2 ? null : floatingActionButton[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         iconSize: 34,

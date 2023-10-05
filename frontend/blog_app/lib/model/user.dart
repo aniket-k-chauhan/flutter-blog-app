@@ -11,9 +11,9 @@ class UserModel {
   UserModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     email = json['email'];
-    skills = json['skills'].cast<String>();
-    projects = json['projects'].cast<String>();
-    achievements = json['achievements'].cast<String>();
+    skills = json['skills']?.cast<String>();
+    projects = json['projects']?.cast<String>();
+    achievements = json['achievements']?.cast<String>();
   }
 
   Map<String, dynamic> toJson() {
