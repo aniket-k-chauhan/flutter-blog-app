@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:blog_app/api/firestoreAPI.dart';
+import 'package:blog_app/views/portfolio/portfolio_details.dart';
 import 'package:blog_app/widgets/common/custom_loader.dart';
 import 'package:flutter/material.dart';
 
@@ -21,10 +22,15 @@ class Portfolio extends StatelessWidget {
                 : ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
-                      Map<String, dynamic> user =
+                      Map<String, dynamic>? user =
                           snapshot.data!.docs[index].data();
                       return PortfolioCard(
-                          name: user["name"], email: user["email"]);
+                        name: user["name"],
+                        email: user["email"],
+                        skills: user["skills"],
+                        projects: user["projects"],
+                        achievements: user["achievements"],
+                      );
                     },
                   );
           }),
@@ -35,9 +41,9 @@ class Portfolio extends StatelessWidget {
 class PortfolioCard extends StatelessWidget {
   final String name;
   final String email;
-  final List<String>? skills;
-  final List<String>? projects;
-  final List<String>? achievements;
+  final List<dynamic>? skills;
+  final List<dynamic>? projects;
+  final List<dynamic>? achievements;
 
   const PortfolioCard({
     super.key,
@@ -52,7 +58,8 @@ class PortfolioCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        log("Profile Clicked");
+        Navigator.of(context).pushNamed("/portfolio",
+            arguments: PortfolioDetailsArgumets(email, isReadOnly: true));
       },
       child: Card(
         margin: EdgeInsets.symmetric(vertical: 4),

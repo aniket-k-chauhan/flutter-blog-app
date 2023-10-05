@@ -1,4 +1,5 @@
 import 'package:blog_app/auth/auth.dart';
+import 'package:blog_app/views/portfolio/portfolio_details.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioFloatingActionButton extends StatelessWidget {
@@ -6,8 +7,9 @@ class PortfolioFloatingActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context)
-            .pushNamed("/portfolio", arguments: Auth.getLoggedInUser()!.email);
+        Navigator.of(context).pushNamed("/portfolio",
+            arguments:
+                PortfolioDetailsArgumets(Auth.getLoggedInUser()!.email!));
       },
       label: Column(
         children: [

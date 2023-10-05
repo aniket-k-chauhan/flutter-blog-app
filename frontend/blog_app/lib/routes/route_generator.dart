@@ -18,8 +18,14 @@ class RouteGenerator {
       case "/home":
         return MaterialPageRoute(builder: ((context) => DashboardScreen()));
       case "/portfolio":
-        return MaterialPageRoute(
-            builder: ((context) => PortfolioDetails(email: args.toString())));
+        if (args is PortfolioDetailsArgumets) {
+          return MaterialPageRoute(
+              builder: ((context) => PortfolioDetails(
+                    email: args.email,
+                    isReadOnly: args.isReadOnly,
+                  )));
+        }
+        return _errorRoute();
 
       default:
         return _errorRoute();
