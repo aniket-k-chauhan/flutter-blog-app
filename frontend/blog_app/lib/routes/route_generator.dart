@@ -1,5 +1,6 @@
 import 'package:blog_app/screens/DashboardScreen.dart';
 import 'package:blog_app/screens/RegisterScreen.dart';
+import 'package:blog_app/views/blog/blog_form.dart';
 import 'package:blog_app/views/portfolio/portfolio_details.dart';
 import "package:flutter/material.dart";
 
@@ -26,6 +27,9 @@ class RouteGenerator {
                   )));
         }
         return _errorRoute();
+
+      case "/addBlog":
+        return MaterialPageRoute(builder: ((context) => BlogForm()));
 
       default:
         return _errorRoute();
