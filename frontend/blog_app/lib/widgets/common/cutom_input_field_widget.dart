@@ -6,6 +6,7 @@ class CustomInputFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final int? maxLine;
   final bool readOnly;
+  final bool autofocus;
 
   CustomInputFieldWidget({
     super.key,
@@ -14,6 +15,7 @@ class CustomInputFieldWidget extends StatelessWidget {
     this.obscureText = false,
     this.maxLine = 1,
     this.readOnly = false,
+    this.autofocus = false,
   });
 
   @override
@@ -22,6 +24,7 @@ class CustomInputFieldWidget extends StatelessWidget {
       width: MediaQuery.of(context).size.width - 70,
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: TextFormField(
+        autofocus: autofocus,
         readOnly: readOnly,
         maxLines: maxLine,
         controller: controller,
@@ -37,7 +40,9 @@ class CustomInputFieldWidget extends StatelessWidget {
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyle(
-            fontSize: 17,
+            fontSize: 18,
+            letterSpacing: 1.5,
+            fontWeight: FontWeight.bold,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
