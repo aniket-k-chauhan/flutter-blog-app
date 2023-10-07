@@ -17,6 +17,8 @@ class Auth {
           errorMsg = "Invalid Mail";
         case "weak-password":
           errorMsg = "Password should be at least 6 characters";
+        case "email-already-in-use":
+          errorMsg = "The email address is already in use by another account";
         default:
           errorMsg = "Authentication Error";
       }
