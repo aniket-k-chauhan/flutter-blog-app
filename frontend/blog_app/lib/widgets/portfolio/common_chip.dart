@@ -12,8 +12,9 @@ class CommonChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Chip(
       label: Text(labelText),
-      labelStyle: TextStyle(
-        fontSize: 16,
+      labelStyle: const TextStyle(
+        fontSize: 18,
+        color: Color.fromARGB(223, 41, 88, 127),
       ),
     );
   }

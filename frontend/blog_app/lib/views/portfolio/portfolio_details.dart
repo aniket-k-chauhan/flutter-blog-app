@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+
 import 'package:blog_app/api/firestoreAPI.dart';
 import 'package:blog_app/model/user.dart';
 import 'package:blog_app/widgets/common/common_snackbar.dart';
 import 'package:blog_app/widgets/common/custom_loader.dart';
 import 'package:blog_app/widgets/common/cutom_input_field_widget.dart';
 import 'package:blog_app/widgets/portfolio/cutom_portfolio_details_form_section.dart';
-import 'package:flutter/material.dart';
 
 class PortfolioDetailsArgumets {
   final String email;
@@ -23,7 +24,14 @@ class PortfolioDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Portfolio"),
+        backgroundColor: Color.fromARGB(199, 198, 229, 255),
+        title: const Text(
+          "Portfolio",
+          style: TextStyle(
+            fontSize: 24,
+            color: Color.fromARGB(223, 41, 88, 127),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -72,7 +80,7 @@ class _PortfolioDetailsFormState extends State<_PortfolioDetailsForm> {
                 CustomInputFieldWidget(
                   labelText: "Name",
                   controller: _nameController,
-                  readOnly: widget.isReadOnly,
+                  readOnly: true,
                 ),
                 CustomInputFieldWidget(
                   labelText: "Email",
@@ -105,6 +113,10 @@ class _PortfolioDetailsFormState extends State<_PortfolioDetailsForm> {
                           height: 45,
                           margin: const EdgeInsets.symmetric(vertical: 16),
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Color.fromARGB(255, 163, 213, 254),
+                            ),
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 try {
@@ -112,10 +124,15 @@ class _PortfolioDetailsFormState extends State<_PortfolioDetailsForm> {
                                     loading = true;
                                   });
                                   await updateUser(user, user.email!);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      CommonSnackBar.buildSnackBar(
+                                          context,
+                                          "Your Details Updated Sucessfully",
+                                          "success"));
                                 } catch (error) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       CommonSnackBar.buildSnackBar(
-                                          context, error.toString()));
+                                          context, error.toString(), "error"));
                                 } finally {
                                   setState(() {
                                     loading = false;
@@ -125,7 +142,10 @@ class _PortfolioDetailsFormState extends State<_PortfolioDetailsForm> {
                             },
                             child: Text(
                               "Save",
-                              style: TextStyle(fontSize: 20),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(223, 41, 88, 127),
+                              ),
                             ),
                           ),
                         ),
@@ -134,7 +154,8 @@ class _PortfolioDetailsFormState extends State<_PortfolioDetailsForm> {
           );
         } else if (snapshot.hasError) {
           ScaffoldMessenger.of(context).showSnackBar(
-              CommonSnackBar.buildSnackBar(context, snapshot.error.toString()));
+              CommonSnackBar.buildSnackBar(
+                  context, snapshot.error.toString(), "error"));
         }
         return Center(
           child: CustomLoader(),

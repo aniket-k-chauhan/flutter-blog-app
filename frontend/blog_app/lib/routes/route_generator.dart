@@ -1,9 +1,11 @@
+import "package:flutter/material.dart";
+
+import 'package:blog_app/model/blog.dart';
 import 'package:blog_app/screens/DashboardScreen.dart';
 import 'package:blog_app/screens/RegisterScreen.dart';
 import 'package:blog_app/views/blog/blog_form.dart';
+import 'package:blog_app/views/blog/blog_read.dart';
 import 'package:blog_app/views/portfolio/portfolio_details.dart';
-import "package:flutter/material.dart";
-
 import 'package:blog_app/screens/LoginScreen.dart';
 
 class RouteGenerator {
@@ -27,9 +29,24 @@ class RouteGenerator {
                   )));
         }
         return _errorRoute();
-
-      case "/addBlog":
+      case "/blogForm":
+        if (args is BlogModel) {
+          return MaterialPageRoute(
+              builder: ((context) => BlogForm(
+                    blog: args,
+                  )));
+        }
         return MaterialPageRoute(builder: ((context) => BlogForm()));
+      case "/readBlog":
+        if (args is BlogModel) {
+          return MaterialPageRoute(
+            builder: ((context) => BlogRead(
+                  blog: args,
+                )),
+          );
+        }
+
+        return _errorRoute();
 
       default:
         return _errorRoute();

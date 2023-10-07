@@ -1,10 +1,11 @@
+import "package:flutter/material.dart";
+
 import "package:blog_app/api/firestoreAPI.dart";
 import "package:blog_app/auth/auth.dart";
 import "package:blog_app/model/user.dart";
 import "package:blog_app/widgets/common/common_snackbar.dart";
 import "package:blog_app/widgets/common/custom_loader.dart";
 import "package:blog_app/widgets/common/cutom_input_field_widget.dart";
-import "package:flutter/material.dart";
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -24,6 +25,7 @@ class RegisterScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 34,
                   fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(223, 41, 88, 127),
                 ),
               ),
               SizedBox(
@@ -49,6 +51,7 @@ class RegisterScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(223, 41, 88, 127),
                       ),
                     ),
                   ),
@@ -102,9 +105,6 @@ class _RegisterFormState extends State<_RegisterForm> {
             controller: pwdController,
             maxLine: 1,
           ),
-          // inputField(context, "Name", false, nameController),
-          // inputField(context, "Email", false, emailController),
-          // inputField(context, "Password", true, pwdController),
           loading
               ? CustomLoader()
               : Container(
@@ -112,6 +112,9 @@ class _RegisterFormState extends State<_RegisterForm> {
                   height: 45,
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 163, 213, 254),
+                    ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         try {
@@ -131,10 +134,13 @@ class _RegisterFormState extends State<_RegisterForm> {
 
                           // navigate to home page
                           Navigator.of(context).pushReplacementNamed("/home");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              CommonSnackBar.buildSnackBar(context,
+                                  "Successfully Registered", "success"));
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               CommonSnackBar.buildSnackBar(
-                                  context, error.toString()));
+                                  context, error.toString(), "error"));
                         } finally {
                           setState(() {
                             loading = false;
@@ -144,7 +150,10 @@ class _RegisterFormState extends State<_RegisterForm> {
                     },
                     child: Text(
                       "Register",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color.fromARGB(223, 41, 88, 127),
+                      ),
                     ),
                   ),
                 ),

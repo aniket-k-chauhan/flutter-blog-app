@@ -1,5 +1,7 @@
-import "package:blog_app/auth/auth.dart";
 import "package:flutter/material.dart";
+
+import "package:blog_app/auth/auth.dart";
+import "package:blog_app/widgets/common/custom_loader.dart";
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -25,22 +27,22 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "Blog App",
               style: TextStyle(
                 fontSize: 34,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 25,
             ),
-            CircularProgressIndicator(),
+            CustomLoader(),
           ],
         ),
       ),

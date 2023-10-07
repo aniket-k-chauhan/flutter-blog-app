@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
+
 import 'package:blog_app/model/user.dart';
 import 'package:blog_app/widgets/common/cutom_input_field_widget.dart';
-import 'package:flutter/material.dart';
 
 class CustomPortfolioDetailsFormSection extends StatefulWidget {
   List<String>? sectionValueList;
@@ -33,84 +34,107 @@ class _CustomPortfolioDetailsFormSectionState
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  "${widget.sectionName[0].toUpperCase()}${widget.sectionName.substring(1).toLowerCase()}",
-                  style: TextStyle(
-                    fontSize: 34,
-                    fontWeight: FontWeight.bold,
+          Container(
+            margin: const EdgeInsets.only(top: 14, bottom: 12),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    "${widget.sectionName[0].toUpperCase()}${widget.sectionName.substring(1).toLowerCase()}",
+                    style: const TextStyle(
+                      fontSize: 34,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(223, 41, 88, 127),
+                    ),
                   ),
                 ),
-              ),
-              if (!widget.isReadOnly)
-                IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          topRight: Radius.circular(10),
-                        ),
-                      ),
-                      builder: (BuildContext context) {
-                        return Container(
-                          height: double.maxFinite,
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 8),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-                                CustomInputFieldWidget(
-                                  labelText: "Title",
-                                  controller: _titleController,
-                                  autofocus: true,
+                if (!widget.isReadOnly)
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: const Color.fromARGB(117, 91, 154, 206),
+                    ),
+                    child: IconButton(
+                      color: const Color.fromARGB(223, 41, 88, 127),
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: double.maxFinite,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(10),
                                 ),
-                                Container(
-                                  width: MediaQuery.of(context).size.width - 90,
-                                  height: 45,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 16),
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      if (_formKey.currentState!.validate()) {
-                                        setState(() {
-                                          widget.sectionValueList =
-                                              widget.sectionValueList == null
-                                                  ? [_titleController.text]
-                                                  : [
-                                                      ...widget
-                                                          .sectionValueList!,
-                                                      _titleController.text
-                                                    ];
-                                        });
-                                        updateActualUserData();
-                                        _titleController.clear();
-                                        Navigator.of(context).pop();
-                                      }
-                                    },
-                                    child: Text(
-                                      "Add",
-                                      style: TextStyle(fontSize: 20),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 20),
+                              child: Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    CustomInputFieldWidget(
+                                      labelText: "Title",
+                                      controller: _titleController,
+                                      autofocus: true,
                                     ),
-                                  ),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          90,
+                                      height: 45,
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 16),
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 163, 213, 254),
+                                        ),
+                                        onPressed: () {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            setState(() {
+                                              widget.sectionValueList =
+                                                  widget.sectionValueList ==
+                                                          null
+                                                      ? [_titleController.text]
+                                                      : [
+                                                          ...widget
+                                                              .sectionValueList!,
+                                                          _titleController.text
+                                                        ];
+                                            });
+                                            updateActualUserData();
+                                            _titleController.clear();
+                                            Navigator.of(context).pop();
+                                          }
+                                        },
+                                        child: const Text(
+                                          "Add",
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            color: Color.fromARGB(
+                                                223, 41, 88, 127),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                  iconSize: 34,
-                  icon: Icon(
-                    Icons.add,
+                      iconSize: 34,
+                      icon: const Icon(
+                        Icons.add,
+                      ),
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
           ListView.builder(
             physics:
@@ -121,9 +145,15 @@ class _CustomPortfolioDetailsFormSectionState
               return Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
-                color: Color.fromARGB(117, 91, 154, 206),
+                color: const Color.fromARGB(199, 198, 229, 255),
                 child: ListTile(
-                  title: Text(widget.sectionValueList![index]),
+                  title: Text(
+                    widget.sectionValueList![index],
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: Color.fromARGB(223, 41, 88, 127),
+                    ),
+                  ),
                   trailing: widget.isReadOnly
                       ? null
                       : IconButton(
@@ -136,7 +166,7 @@ class _CustomPortfolioDetailsFormSectionState
                             });
                             updateActualUserData();
                           },
-                          icon: Icon(Icons.delete),
+                          icon: const Icon(Icons.delete),
                           iconSize: 24,
                         ),
                 ),

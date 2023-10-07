@@ -1,8 +1,9 @@
+import "package:flutter/material.dart";
+
 import "package:blog_app/auth/auth.dart";
 import "package:blog_app/widgets/common/common_snackbar.dart";
 import "package:blog_app/widgets/common/custom_loader.dart";
 import "package:blog_app/widgets/common/cutom_input_field_widget.dart";
-import "package:flutter/material.dart";
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -20,6 +21,7 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 34,
                   fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(223, 41, 88, 127),
                 ),
               ),
               SizedBox(
@@ -45,6 +47,7 @@ class LoginScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(223, 41, 88, 127),
                       ),
                     ),
                   ),
@@ -100,6 +103,9 @@ class _LoginFormState extends State<_LoginForm> {
                   height: 45,
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 163, 213, 254),
+                    ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         try {
@@ -112,10 +118,13 @@ class _LoginFormState extends State<_LoginForm> {
 
                           // navigate to home page
                           Navigator.of(context).pushReplacementNamed("/home");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              CommonSnackBar.buildSnackBar(context,
+                                  "Successfully Logged In", "success"));
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               CommonSnackBar.buildSnackBar(
-                                  context, error.toString()));
+                                  context, error.toString(), "error"));
                         } finally {
                           setState(() {
                             loading = false;
@@ -125,7 +134,10 @@ class _LoginFormState extends State<_LoginForm> {
                     },
                     child: Text(
                       "Login",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color.fromARGB(223, 41, 88, 127),
+                      ),
                     ),
                   ),
                 ),

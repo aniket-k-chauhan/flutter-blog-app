@@ -7,7 +7,9 @@ class CustomLoader extends StatelessWidget {
       width: 50,
       height: 50,
       margin: const EdgeInsets.symmetric(vertical: 16),
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(
+        color: Color.fromARGB(117, 91, 154, 206),
+      ),
     );
   }
 }

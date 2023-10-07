@@ -1,9 +1,10 @@
+import 'package:flutter/material.dart';
+
 import 'package:blog_app/api/firestoreAPI.dart';
 import 'package:blog_app/model/contact.dart';
 import 'package:blog_app/widgets/common/common_snackbar.dart';
 import 'package:blog_app/widgets/common/custom_loader.dart';
 import 'package:blog_app/widgets/common/cutom_input_field_widget.dart';
-import 'package:flutter/material.dart';
 
 class Contact extends StatelessWidget {
   @override
@@ -21,6 +22,7 @@ class Contact extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 34,
                   fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(223, 41, 88, 127),
                 ),
               ),
             ),
@@ -77,6 +79,9 @@ class _ContactFormState extends State<_ContactForm> {
                   height: 45,
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 163, 213, 254),
+                    ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         try {
@@ -92,10 +97,15 @@ class _ContactFormState extends State<_ContactForm> {
                           _emailController.clear();
                           _titleController.clear();
                           _descriptionController.clear();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              CommonSnackBar.buildSnackBar(
+                                  context,
+                                  "Contact Details Submitted Successfully",
+                                  "success"));
                         } catch (error) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               CommonSnackBar.buildSnackBar(
-                                  context, error.toString()));
+                                  context, error.toString(), "error"));
                         } finally {
                           setState(() {
                             loading = false;
@@ -105,7 +115,10 @@ class _ContactFormState extends State<_ContactForm> {
                     },
                     child: Text(
                       "Submit",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color.fromARGB(223, 41, 88, 127),
+                      ),
                     ),
                   ),
                 ),

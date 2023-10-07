@@ -1,3 +1,5 @@
+/// User authentication
+
 import "package:firebase_auth/firebase_auth.dart";
 
 class Auth {
@@ -9,7 +11,16 @@ class Auth {
           .createUserWithEmailAndPassword(email: email, password: password);
       return userCredential;
     } on FirebaseException catch (error) {
-      throw Exception(error.message ?? "Something went wrong");
+      String errorMsg;
+      switch (error.code) {
+        case "invalid-email":
+          errorMsg = "Invalid Mail";
+        case "weak-password":
+          errorMsg = "Password should be at least 6 characters";
+        default:
+          errorMsg = "Authentication Error";
+      }
+      throw Exception(errorMsg);
     } catch (error) {
       throw Exception("Something went wrong");
     }
@@ -20,9 +31,18 @@ class Auth {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseException catch (error) {
-      throw Exception(error.message ?? "Something went wrong");
+      String errorMsg;
+      switch (error.code) {
+        case "invalid-email":
+          errorMsg = "Invalid Mail";
+        case "INVALID_LOGIN_CREDENTIALS":
+          errorMsg = "Invalid login credentials";
+        default:
+          errorMsg = "Authentication Error";
+      }
+      throw Exception(errorMsg);
     } catch (error) {
-      throw Exception("Something went wrong");
+      throw Exception("Authentication Error");
     }
   }
 
@@ -30,9 +50,9 @@ class Auth {
     try {
       await _firebaseAuth.signOut();
     } on FirebaseException catch (error) {
-      throw Exception(error.message ?? "Something went wrong");
+      throw Exception(error.code);
     } catch (error) {
-      throw Exception("Something went wrong");
+      throw Exception("Authentication Error");
     }
   }
 
@@ -40,9 +60,9 @@ class Auth {
     try {
       return _firebaseAuth.currentUser;
     } on FirebaseException catch (error) {
-      throw Exception(error.message ?? "Something went wrong");
+      throw Exception(error.message ?? "Can't get current User");
     } catch (error) {
-      throw Exception("Something went wrong");
+      throw Exception("Can't get current User");
     }
   }
 }

@@ -36,18 +36,23 @@ class CustomInputFieldWidget extends StatelessWidget {
           return null;
         },
         obscureText: obscureText,
-        style: TextStyle(fontSize: 17),
+        style: TextStyle(
+          fontSize: 18,
+          color: Color.fromARGB(223, 41, 88, 127),
+        ),
         decoration: InputDecoration(
           labelText: labelText,
           labelStyle: TextStyle(
             fontSize: 18,
             letterSpacing: 1.5,
             fontWeight: FontWeight.bold,
+            color: Color.fromARGB(223, 41, 88, 127),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide(
               width: 1.5,
+              color: Color.fromARGB(223, 41, 88, 127),
             ),
           ),
           enabledBorder: OutlineInputBorder(
