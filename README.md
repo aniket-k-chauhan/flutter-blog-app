@@ -1,6 +1,9 @@
 # Personal Portfolio and Blog Platform
 This project is a personal portfolio and blog platform showcasing my skills, projects, and technical blogs. The platform is built using Node.js with Express.js for the backend, Firebase for data storage, and Strapi for content management. The frontend is developed using Flutter, ensuring a responsive design suitable for both desktop and mobile devices.
 
+### Note
+You can view blog app frontend code in [project](https://github.com/aniket-k-chauhan/promact-project-blog-app/tree/project) branch and backend code in [project_backend](https://github.com/aniket-k-chauhan/promact-project-blog-app/tree/project_backend) branch.
+
 ## Features
 ### User Authentication:
 
@@ -33,11 +36,6 @@ Use Strapi to manage Blog Content
 
 ### Firebase
 Use for user authentication and to manage user's portfolio details using firestore.
-
-### Note
-
-You can view blog app frontend in [project](https://github.com/aniket-k-chauhan/promact-project-blog-app/tree/project) branch and backend in [project_backend](https://github.com/aniket-k-chauhan/promact-project-blog-app/tree/project_backend) branch.
-
 
 ## App Demo
 https://github.com/aniket-k-chauhan/promact-project-blog-app/assets/107117918/82f1f1bf-7a8a-4843-a561-9a3b46a92921
